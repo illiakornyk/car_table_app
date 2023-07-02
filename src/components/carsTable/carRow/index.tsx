@@ -5,10 +5,10 @@ import { Car } from '@/api';
 export interface CarRowProps {
   car: Car;
   onEditCar: (car: Car) => void;
+  onDeleteCar: (car: Car) => void;
 }
 
-export default function CarRow({ car, onEditCar }: CarRowProps) {
-  console.log(`car.price ${car.price}`);
+export default function CarRow({ car, onEditCar, onDeleteCar }: CarRowProps) {
   const price = parseFloat(car.price.replace('$', ''));
   const formattedPrice = new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -31,7 +31,13 @@ export default function CarRow({ car, onEditCar }: CarRowProps) {
         >
           Edit
         </button>
-        | Delete
+        |
+        <button
+          className='ml-2 rounded bg-red-500 px-4 py-2 text-white'
+          onClick={() => onDeleteCar(car)}
+        >
+          Delete
+        </button>
       </td>
     </tr>
   );

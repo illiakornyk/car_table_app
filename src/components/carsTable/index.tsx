@@ -1,13 +1,19 @@
 import * as React from 'react';
 
-import CarRow, { CarRowProps } from './carRow';
+import { CarRowProps } from './carRow';
+import CarRows from './carRows';
 
 export interface CarsTableProps {
   cars: CarRowProps['car'][];
   onEditCar: (car: CarRowProps['car']) => void;
+  onDeleteCar: (car: CarRowProps['car']) => void;
 }
 
-export default function CarsTable({ cars, onEditCar }: CarsTableProps) {
+export default function CarsTable({
+  cars,
+  onEditCar,
+  onDeleteCar,
+}: CarsTableProps) {
   return (
     <div className='overflow-x-auto'>
       <table className='w-full table-auto text-left'>
@@ -24,9 +30,11 @@ export default function CarsTable({ cars, onEditCar }: CarsTableProps) {
           </tr>
         </thead>
         <tbody>
-          {cars.map((car) => (
-            <CarRow key={car.id} car={car} onEditCar={onEditCar} />
-          ))}
+          <CarRows
+            cars={cars}
+            onEditCar={onEditCar}
+            onDeleteCar={onDeleteCar}
+          />
         </tbody>
       </table>
     </div>

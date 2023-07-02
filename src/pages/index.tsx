@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 
 import CarsTable from '@/components/carsTable';
+import DeleteCarForm from '@/components/forms/deleteCarForm';
 import EditCarForm from '@/components/forms/editCarForm';
 import Layout from '@/components/layout/Layout';
 import Pagination from '@/components/pagination';
@@ -17,6 +18,7 @@ export default function HomePage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCar, setSelectedCar] = useState<Car | null>(null);
+  const [carToDelete, setCarToDelete] = useState<Car | null>(null);
 
   useEffect(() => {
     async function fetchCars() {
@@ -37,6 +39,11 @@ export default function HomePage() {
 
   const handleEditCar = (car: Car) => {
     setSelectedCar(car);
+  };
+
+  const handleDeleteCar = (car: Car) => {
+    setCars((cars) => cars.filter((c) => c.id !== car.id));
+    setCarToDelete(null);
   };
 
   const handleSaveCar = (updatedCar: Car) => {
@@ -63,7 +70,11 @@ export default function HomePage() {
         <div className='w-1/3 pb-4'>
           <Search value={searchQuery} onChange={setSearchQuery} />
         </div>
-        <CarsTable cars={carsToDisplay} onEditCar={handleEditCar} />
+        <CarsTable
+          cars={carsToDisplay}
+          onEditCar={handleEditCar}
+          onDeleteCar={setCarToDelete}
+        />
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
@@ -75,6 +86,15 @@ export default function HomePage() {
             isOpen={Boolean(selectedCar)}
             onClose={() => setSelectedCar(null)}
             onSave={handleSaveCar}
+          />
+        )}
+
+        {carToDelete && (
+          <DeleteCarForm
+            car={carToDelete}
+            isOpen={Boolean(carToDelete)}
+            onClose={() => setCarToDelete(null)}
+            onDelete={handleDeleteCar}
           />
         )}
       </div>

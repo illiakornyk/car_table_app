@@ -28,7 +28,7 @@ export default function EditCarForm({
 }: EditCarFormProps) {
   const price = parseFloat(car.price.replace('$', ''));
 
-  const { register, handleSubmit, reset } = useForm<FormData>({
+  const { register, handleSubmit, reset, formState } = useForm<FormData>({
     defaultValues: {
       color: car.car_color,
       price: price,
@@ -105,6 +105,9 @@ export default function EditCarForm({
             className='w-full rounded border px-4 py-2'
             type='text'
           />
+          {formState.errors.color && (
+            <p className='text-red-500'>{formState.errors.color.message}</p>
+          )}
         </div>
         <div className='mb-4'>
           <label className='mb-1 block'>Price in $</label>
@@ -112,9 +115,13 @@ export default function EditCarForm({
             {...register('price')}
             className='w-full rounded border px-4 py-2'
             type='number'
-            step='0.01'
+            step={0.01}
           />
+          {formState.errors.price && (
+            <p className='text-red-500'>{formState.errors.price.message}</p>
+          )}
         </div>
+
         <div className='mb-4'>
           <label className='mb-1 block'>Availability</label>
           <select

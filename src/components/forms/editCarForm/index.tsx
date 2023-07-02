@@ -11,6 +11,12 @@ interface EditCarFormProps {
   onSave: (car: Car) => void;
 }
 
+interface FormData {
+  color: string;
+  price: string;
+  availability: string;
+}
+
 export default function EditCarForm({
   car,
   isOpen,
@@ -19,19 +25,22 @@ export default function EditCarForm({
 }: EditCarFormProps) {
   const price = parseFloat(car.price.replace('$', ''));
 
-  const { register, handleSubmit, reset } = useForm({
+  const { register, handleSubmit, reset } = useForm<FormData>({
     defaultValues: {
       color: car.car_color,
-      price,
+      price: price.toString(),
+
       availability: car.availability ? 'Yes' : 'No',
     },
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: FormData) => {
+    const formattedPrice = `$${data.price}`;
+
     onSave({
       ...car,
       car_color: data.color,
-      price: data.price,
+      price: formattedPrice,
       availability: data.availability === 'Yes',
     });
     onClose();
@@ -40,10 +49,10 @@ export default function EditCarForm({
   React.useEffect(() => {
     reset({
       color: car.car_color,
-      price,
+      price: price.toString(),
       availability: car.availability ? 'Yes' : 'No',
     });
-  }, [car, reset]);
+  }, [car, reset, price]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -52,7 +61,7 @@ export default function EditCarForm({
         <div className='mb-4'>
           <label className='mb-1 block'>Company</label>
           <input
-            className='w-full rounded border bg-gray-100 px-4 py-2'
+            className='w-full rounded border bg-gray-200 px-4 py-2'
             type='text'
             value={car.car}
             disabled
@@ -61,7 +70,7 @@ export default function EditCarForm({
         <div className='mb-4'>
           <label className='mb-1 block'>Model</label>
           <input
-            className='w-full rounded border bg-gray-100 px-4 py-2'
+            className='w-full rounded border bg-gray-200 px-4 py-2'
             type='text'
             value={car.car_model}
             disabled
@@ -70,7 +79,7 @@ export default function EditCarForm({
         <div className='mb-4'>
           <label className='mb-1 block'>VIN</label>
           <input
-            className='w-full rounded border bg-gray-100 px-4 py-2'
+            className='w-full rounded border bg-gray-200 px-4 py-2'
             type='text'
             value={car.car_vin}
             disabled
@@ -79,8 +88,8 @@ export default function EditCarForm({
         <div className='mb-4'>
           <label className='mb-1 block'>Year</label>
           <input
-            className='w-full rounded border bg-gray-100 px-4 py-2'
-            type='text'
+            className='w-full rounded border bg-gray-200 px-4 py-2'
+            type='number'
             value={car.car_model_year}
             disabled
           />
@@ -98,7 +107,8 @@ export default function EditCarForm({
           <input
             {...register('price')}
             className='w-full rounded border px-4 py-2'
-            type='text'
+            type='number'
+            step='0.01'
           />
         </div>
         <div className='mb-4'>

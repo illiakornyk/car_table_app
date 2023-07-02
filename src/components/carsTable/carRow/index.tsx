@@ -8,6 +8,7 @@ export interface CarRowProps {
 }
 
 export default function CarRow({ car, onEditCar }: CarRowProps) {
+  console.log(`car.price ${car.price}`);
   const price = parseFloat(car.price.replace('$', ''));
   const formattedPrice = new Intl.NumberFormat('en-US', {
     style: 'currency',

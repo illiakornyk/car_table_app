@@ -17,10 +17,12 @@ export default function EditCarForm({
   onClose,
   onSave,
 }: EditCarFormProps) {
+  const price = parseFloat(car.price.replace('$', ''));
+
   const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       color: car.car_color,
-      price: car.price,
+      price,
       availability: car.availability ? 'Yes' : 'No',
     },
   });
@@ -38,7 +40,7 @@ export default function EditCarForm({
   React.useEffect(() => {
     reset({
       color: car.car_color,
-      price: car.price,
+      price,
       availability: car.availability ? 'Yes' : 'No',
     });
   }, [car, reset]);
@@ -92,7 +94,7 @@ export default function EditCarForm({
           />
         </div>
         <div className='mb-4'>
-          <label className='mb-1 block'>Price</label>
+          <label className='mb-1 block'>Price in $</label>
           <input
             {...register('price')}
             className='w-full rounded border px-4 py-2'

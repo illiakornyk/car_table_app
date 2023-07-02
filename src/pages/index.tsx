@@ -2,11 +2,12 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 
 import CarsTable from '@/components/carsTable';
+import EditCarForm from '@/components/forms/editCarForm';
 import Layout from '@/components/layout/Layout';
 import Pagination from '@/components/pagination';
 import Search from '@/components/search';
 
-import { Car, getCars } from '../api';
+import { Car, getCars } from '@/api';
 
 const CARS_PER_PAGE = 10;
 
@@ -15,6 +16,7 @@ export default function HomePage() {
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCar, setSelectedCar] = useState<Car | null>(null);
 
   useEffect(() => {
     async function fetchCars() {
@@ -33,6 +35,17 @@ export default function HomePage() {
     return <div>Error: {error}</div>;
   }
 
+  const handleEditCar = (car: Car) => {
+    setSelectedCar(car);
+  };
+
+  const handleSaveCar = (updatedCar: Car) => {
+    setCars((cars) =>
+      cars.map((car) => (car.id === updatedCar.id ? updatedCar : car))
+    );
+    setSelectedCar(null);
+  };
+
   const filteredCars = cars.filter((car) =>
     Object.values(car).some((value) =>
       value.toString().toLowerCase().includes(searchQuery.toLowerCase())
@@ -50,12 +63,20 @@ export default function HomePage() {
         <div className='w-1/3 pb-4'>
           <Search value={searchQuery} onChange={setSearchQuery} />
         </div>
-        <CarsTable cars={carsToDisplay} />
+        <CarsTable cars={carsToDisplay} onEditCar={handleEditCar} />
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
+        {selectedCar && (
+          <EditCarForm
+            car={selectedCar}
+            isOpen={Boolean(selectedCar)}
+            onClose={() => setSelectedCar(null)}
+            onSave={handleSaveCar}
+          />
+        )}
       </div>
     </Layout>
   );

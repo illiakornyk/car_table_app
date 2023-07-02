@@ -1,9 +1,12 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import * as React from 'react';
 import { useForm } from 'react-hook-form';
 
+import { editCarSchema } from '@/components/forms/validation/validatoinSchema';
 import Modal from '@/components/modal';
 
 import { Car } from '@/api';
+
 interface EditCarFormProps {
   car: Car;
   isOpen: boolean;
@@ -13,7 +16,7 @@ interface EditCarFormProps {
 
 interface FormData {
   color: string;
-  price: string;
+  price: number;
   availability: string;
 }
 
@@ -28,10 +31,11 @@ export default function EditCarForm({
   const { register, handleSubmit, reset } = useForm<FormData>({
     defaultValues: {
       color: car.car_color,
-      price: price.toString(),
+      price: price,
 
       availability: car.availability ? 'Yes' : 'No',
     },
+    resolver: yupResolver(editCarSchema),
   });
 
   const onSubmit = (data: FormData) => {
@@ -49,7 +53,7 @@ export default function EditCarForm({
   React.useEffect(() => {
     reset({
       color: car.car_color,
-      price: price.toString(),
+      price,
       availability: car.availability ? 'Yes' : 'No',
     });
   }, [car, reset, price]);

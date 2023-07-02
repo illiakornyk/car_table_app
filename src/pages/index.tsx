@@ -38,12 +38,14 @@ export default function HomePage() {
 
   return (
     <Layout>
-      <CarsTable cars={carsToDisplay} />
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
-      />
+      <div className='flex flex-col'>
+        <CarsTable cars={carsToDisplay} />
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      </div>
     </Layout>
   );
 }

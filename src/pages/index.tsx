@@ -8,6 +8,7 @@ import AddCarForm from '@/components/forms/addCarForm';
 import DeleteCarForm from '@/components/forms/deleteCarForm';
 import EditCarForm from '@/components/forms/editCarForm';
 import Layout from '@/components/layout/Layout';
+import Loader from '@/components/loader';
 import Pagination from '@/components/pagination';
 import Search from '@/components/search';
 
@@ -42,6 +43,14 @@ export default function HomePage() {
 
   if (error) {
     return <div>Error: {error}</div>;
+  }
+
+  if (!isLoaded) {
+    return (
+      <div className='flex justify-center p-10'>
+        <Loader />
+      </div>
+    );
   }
 
   const handleEditCar = (car: Car) => {

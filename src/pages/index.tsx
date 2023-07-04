@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
+import { useCars } from '@/hooks';
+
 import CarsTable from '@/components/carsTable';
 import AddCarForm from '@/components/forms/addCarForm';
 import DeleteCarForm from '@/components/forms/deleteCarForm';
@@ -14,7 +16,9 @@ import { Car, getCars } from '@/api';
 const CARS_PER_PAGE = 10;
 
 export default function HomePage() {
-  const [cars, setCars] = useState<Car[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const [cars, setCars] = useCars(setIsLoaded);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
@@ -23,17 +27,18 @@ export default function HomePage() {
   const [isAddCarOpen, setIsAddCarOpen] = useState(false);
 
   useEffect(() => {
-    async function fetchCars() {
-      const { cars, error } = await getCars();
-      if (error) {
-        setError(error);
-      } else {
-        setCars(cars || []);
-      }
+    if (isLoaded && cars.length === 0) {
+      const fetchCars = async () => {
+        const { cars, error } = await getCars();
+        if (error) {
+          setError(error);
+        } else {
+          setCars(cars || []);
+        }
+      };
+      fetchCars();
     }
-
-    fetchCars();
-  }, []);
+  }, [cars.length, isLoaded]);
 
   if (error) {
     return <div>Error: {error}</div>;

@@ -92,11 +92,17 @@ export default function HomePage() {
             Add Car
           </button>
         </div>
-        <CarsTable
-          cars={carsToDisplay}
-          onEditCar={handleEditCar}
-          onDeleteCar={setCarToDelete}
-        />
+
+        {carsToDisplay.length === 0 ? (
+          <p className='text-center text-lg'>There are no cars to display</p>
+        ) : (
+          <CarsTable
+            cars={carsToDisplay}
+            onEditCar={handleEditCar}
+            onDeleteCar={setCarToDelete}
+          />
+        )}
+
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}

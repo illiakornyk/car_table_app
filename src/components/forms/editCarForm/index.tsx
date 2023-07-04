@@ -142,7 +142,7 @@ export default function EditCarForm({
           </button>
           <button
             type='submit'
-            className='rounded bg-blue-500 px-4 py-2 text-white'
+            className='rounded bg-sky-500 px-4 py-2 text-sky-50'
           >
             Save
           </button>

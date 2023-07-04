@@ -78,11 +78,15 @@ export default function HomePage() {
 
   return (
     <Layout>
-      <div className='flex flex-col'>
-        <div className='w-1/3 pb-4'>
-          <Search value={searchQuery} onChange={setSearchQuery} />
+      <div className='flex w-full flex-col'>
+        <h2 className='pb-2 text-center'>Cars list table</h2>
+        <div className='flex w-full justify-between pb-4 '>
+          <div className='w-fit'>
+            <Search value={searchQuery} onChange={setSearchQuery} />
+          </div>
+
           <button
-            className='mb-4 rounded bg-blue-500 px-4 py-2 text-white'
+            className='mb-4 rounded bg-sky-500 px-4 py-2 text-white'
             onClick={() => setIsAddCarOpen(true)}
           >
             Add Car

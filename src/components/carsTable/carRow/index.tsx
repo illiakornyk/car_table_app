@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import Dropdown from '@/components/dropdown';
+
 import { Car } from '@/api';
 
 export interface CarRowProps {
@@ -25,19 +27,20 @@ export default function CarRow({ car, onEditCar, onDeleteCar }: CarRowProps) {
       <td className='border px-4 py-2'>{formattedPrice}</td>
       <td className='border px-4 py-2'>{car.availability ? 'Yes' : 'No'}</td>
       <td className='border px-4 py-2'>
-        <button
-          className='mr-2 rounded bg-blue-500 px-4 py-2 text-white'
-          onClick={() => onEditCar(car)}
-        >
-          Edit
-        </button>
-        |
-        <button
-          className='ml-2 rounded bg-red-500 px-4 py-2 text-white'
-          onClick={() => onDeleteCar(car)}
-        >
-          Delete
-        </button>
+        <Dropdown>
+          <li
+            className='cursor-pointer px-4 py-2 hover:bg-gray-100'
+            onClick={() => onEditCar(car)}
+          >
+            Edit
+          </li>
+          <li
+            className='cursor-pointer px-4 py-2 hover:bg-gray-100'
+            onClick={() => onDeleteCar(car)}
+          >
+            Delete
+          </li>
+        </Dropdown>
       </td>
     </tr>
   );
